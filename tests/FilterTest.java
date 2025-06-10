@@ -154,7 +154,7 @@ public class FilterTest {
         prices = filterBot.getPrices();
         dates = filterBot.getDates();
 
-        assertFalse(locations.isEmpty() && prices.isEmpty() && dates.isEmpty());
+        assertFalse(locations.isEmpty() || prices.isEmpty() || dates.isEmpty());
     }
 
 }
