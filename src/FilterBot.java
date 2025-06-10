@@ -48,41 +48,48 @@ public class FilterBot {
     }
 
     public void setLocation(String cityName){
-        String locationXPath = "/html/body/div[2]/main/div/div[2]/aside/div/section/div/div[2]/div/div/div";
-        String locationInputXPath = "/html/body/div[2]/main/div/div[2]/aside/div/section/div/div[2]/div/div/div[2]/div/div/input";
-        String selectLocationXPath = "/html/body/div[2]/main/div/div[2]/aside/div/section/div/div[2]/div/div/div[2]/div/div[2]/div";
-        String resetWindowXPath = "/html/body/div[2]/main/div/div/h1";
+        if(cityName.isEmpty()){
+            actionProvider.pause(Duration.ofSeconds(TIMEOUT)).build().perform();
+        }else {
+            String locationXPath = "/html/body/div[2]/main/div/div[2]/aside/div/section/div/div[2]/div/div/div";
+            String locationInputXPath = "/html/body/div[2]/main/div/div[2]/aside/div/section/div/div[2]/div/div/div[2]/div/div/input";
+            String selectLocationXPath = "/html/body/div[2]/main/div/div[2]/aside/div/section/div/div[2]/div/div/div[2]/div/div[2]/div";
+            String resetWindowXPath = "/html/body/div[2]/main/div/div/h1";
 
-        WebElement locationElement = wait.until(driver -> driver.findElement(By.xpath(locationXPath)));
-        locationElement.click();
+            WebElement locationElement = wait.until(driver -> driver.findElement(By.xpath(locationXPath)));
+            locationElement.click();
 
-        WebElement locationInputElement = wait.until(driver -> driver.findElement(By.xpath(locationInputXPath)));
-        locationInputElement.clear();
-        locationInputElement.sendKeys(cityName);
+            WebElement locationInputElement = wait.until(driver -> driver.findElement(By.xpath(locationInputXPath)));
+            locationInputElement.clear();
+            locationInputElement.sendKeys(cityName);
 
-        WebElement selectLocationElement = wait.until(driver -> driver.findElement(By.xpath(selectLocationXPath)));
-        selectLocationElement.click();
+            WebElement selectLocationElement = wait.until(driver -> driver.findElement(By.xpath(selectLocationXPath)));
+            selectLocationElement.click();
 
-        WebElement resetElement = wait.until(driver -> driver.findElement(By.xpath(resetWindowXPath)));
-        resetElement.click();
+            WebElement resetElement = wait.until(driver -> driver.findElement(By.xpath(resetWindowXPath)));
+            resetElement.click();
 
-        actionProvider.pause(Duration.ofSeconds(TIMEOUT)).build().perform();
+            actionProvider.pause(Duration.ofSeconds(TIMEOUT)).build().perform();
+        }
     }
 
     public void setPriceFilter (String min, String max) {
         String minPriceXPath = "/html/body/div[2]/main/div/div[2]/aside/div[2]/div[3]/div[2]/div/div[1]/input";
         String maxPriceXPath = "/html/body/div[2]/main/div/div[2]/aside/div[2]/div[3]/div[2]/div/div[3]/input";
         String applyButtonXPath = "/html/body/div[2]/main/div/div[2]/aside/div[3]/button[2]";
+        String resetWindowXPath = "/html/body/div[2]/main/div/div/h1";
 
         WebElement minInput = wait.until(driver -> driver.findElement(By.xpath(minPriceXPath)));
         WebElement maxInput = wait.until(driver -> driver.findElement(By.xpath(maxPriceXPath)));
         WebElement applyButton = wait.until(driver -> driver.findElement(By.xpath(applyButtonXPath)));
+        WebElement resetElement = wait.until(driver -> driver.findElement(By.xpath(resetWindowXPath)));
 
         minInput.clear();
         minInput.sendKeys(min);
         maxInput.clear();
         maxInput.sendKeys(max);
         applyButton.click();
+        resetElement.click();
         actionProvider.pause(Duration.ofSeconds(TIMEOUT)).build().perform();
     }
 
@@ -91,12 +98,15 @@ public class FilterBot {
         String dateXPath = "/html/body/div[2]/main/div/div[2]/aside/div[2]/div[4]/div[2]/div/div/";
         String resetWindowXPath = "/html/body/div[2]/main/div/div/h1";
         dateXPath = switch (date) {
-            case "Tümü" -> dateXPath.concat("div");
             case "Son 24 saat" -> dateXPath.concat("div[2]");
             case "Son 3 gün içinde" -> dateXPath.concat("div[3]");
             case "Son 7 gün içinde" -> dateXPath.concat("div[4]");
-            default -> dateXPath.concat("div[5]");
+            case "Son 15 gün içinde" -> dateXPath.concat("div[5]");
+            default -> dateXPath.concat("div"); // Tümü için
         };
+        if(date.equals("Son 15 gün içinde")){
+            populate();
+        }
         String finalDateXPath = dateXPath;
         WebElement dateElement = wait.until(driver -> driver.findElement(By.xpath(finalDateXPath)));
         WebElement applyButton = wait.until(driver -> driver.findElement(By.xpath(applyButtonXPath)));
@@ -104,7 +114,7 @@ public class FilterBot {
         dateElement.click();
         applyButton.click();
         WebElement resetElement = wait.until(driver -> driver.findElement(By.xpath(resetWindowXPath)));
-        resetElement.click();
+//        resetElement.click();
         actionProvider.pause(Duration.ofSeconds(TIMEOUT)).build().perform();
     }
 
