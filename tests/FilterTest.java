@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -155,6 +156,11 @@ public class FilterTest {
         dates = filterBot.getDates();
 
         assertFalse(locations.isEmpty() || prices.isEmpty() || dates.isEmpty());
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        DriverFactory.quitDriver();
     }
 
 }

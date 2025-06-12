@@ -15,6 +15,7 @@ class SearchPageTest {
     static SearchPage searchPage;
     static ArrayList<String> titleList;
 
+
     @BeforeEach
     public void setUp() {
         searchPage = new SearchPage("https://www.letgo.com/");
