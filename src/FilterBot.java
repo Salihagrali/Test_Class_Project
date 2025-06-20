@@ -36,16 +36,6 @@ public class FilterBot {
         driver.get(url);
     }
 
-    public void searchFor(String query) {
-        String searchXPath = "/html/body/header/div/div[2]/div/div[2]/div[1]/div/input";
-        WebElement searchInput = wait.until(driver -> driver.findElement(By.xpath(searchXPath)));
-        searchInput.clear();
-
-        searchInput.sendKeys(query);
-
-        actionProvider.sendKeys(Keys.ENTER).perform();
-        actionProvider.pause(Duration.ofSeconds(TIMEOUT)).build().perform();
-    }
 
     public void setLocation(String cityName){
         if(cityName.isEmpty()){
@@ -169,22 +159,6 @@ public class FilterBot {
         return locations;
     }
 
-    public WebElement getNoResult(){
-        WebElement noResult = driver.findElement(By.className("no-results-container"));
-        return noResult;
-    }
 
-
-    public String getPriceInputValue(String which) {
-        String xpath;
-        if (which.equals("min")) {
-            xpath = "/html/body/div[2]/main/div/div[2]/aside/div[3]/div[4]/div[2]/div/div[1]/input";
-        } else {
-            xpath = "/html/body/div[2]/main/div/div[2]/aside/div[3]/div[4]/div[2]/div/div[3]/input";
-        }
-
-        WebElement input = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
-        return input.getAttribute("value");
-    }
 
 }

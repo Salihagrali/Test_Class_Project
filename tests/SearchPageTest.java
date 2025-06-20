@@ -46,7 +46,7 @@ class SearchPageTest {
     }
 
 
-    //Boundary Analaysis
+    //Boundary Value Analysis
     @ParameterizedTest
     @CsvSource({
             "0, 1000",

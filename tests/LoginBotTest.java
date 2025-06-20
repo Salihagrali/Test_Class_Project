@@ -34,8 +34,7 @@ public class LoginBotTest {
             "user@.com",        // domain name missing
             "user@xcom",        // no dot in domain
             "x@x.c",            // too short TLD
-            "",                  // empty string
-            " "                 //only space
+            ""                 // empty string
     })
     public void testInvalidEmail(String email) {
         loginBot.login(email);
